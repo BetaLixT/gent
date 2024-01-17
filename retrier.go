@@ -2,9 +2,7 @@ package gent
 
 import (
 	"context"
-	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 
 	sr "github.com/Soreing/retrier"
@@ -65,18 +63,18 @@ func (r *retrier) ShouldRetry(
 	if err != nil {
 		return err, true
 	} else if res.StatusCode > 299 {
-		e := fmt.Errorf(
-			"request failed with status code " +
-				strconv.Itoa(res.StatusCode),
-		)
+		// e := fmt.Errorf(
+		// 	"request failed with status code " +
+		// 		strconv.Itoa(res.StatusCode),
+		// )
 
 		for _, code := range r.retryCodes {
 			if res.StatusCode == code {
-				return e, true
+				return nil, true
 			}
 		}
 
-		return e, false
+		return nil, false
 	} else {
 		return nil, false
 	}
